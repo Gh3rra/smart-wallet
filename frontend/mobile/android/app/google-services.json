@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "607083901379",
+    "project_id": "smartwallet-ed52d",
+    "storage_bucket": "smartwallet-ed52d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:607083901379:android:abfafae749ae824ab9cd76",
+        "android_client_info": {
+          "package_name": "com.example.smart_wallet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "607083901379-imbctblr7b157ohui25kih0qfhtun83b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.smart_wallet",
+            "certificate_hash": "d81570dea3d153149d77f0d106d4d853ad3bb710"
+          }
+        },
+        {
+          "client_id": "607083901379-et8t4d059erpcch5vtlpgcbp9dgvmrq9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCv2haaV_Ps3BFIZei-gFjAuy_eIO8_pqM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "607083901379-et8t4d059erpcch5vtlpgcbp9dgvmrq9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "607083901379-11jp6t3fpcstm6jbsqetg7cdq9qmgm46.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.smartWallet"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

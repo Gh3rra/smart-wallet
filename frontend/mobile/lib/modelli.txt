@@ -1,0 +1,33 @@
+wallet{
+    "amount": number,
+    "colorWallet": number,
+    "colorText" : number,        REMOVE
+    "order": number,
+    "title": String
+}
+
+
+user{
+    "email": String,
+    "name": String,
+    "surname": String,
+    "totalBilance": number,
+    "totalWallet": number,
+    "updateAt" : Timestamp()
+}
+
+category{
+    "icon": number,
+    "name": String,    
+}
+
+
+transaction{
+    "amount": number,
+    "category": String,
+    "date": Timestamp(),
+    "icon": number,
+    "monthYear": String,    REMOVE
+    "title": String,
+    "type": String  
+}
