@@ -1,16 +1,16 @@
-# mobile
+| **Screen**           | **Attributi principali**               | **Descrizione**                                               |
+|--------------------  |----------------------------------------|---------------------------------------------------------------|
+| `main`               | [color](#color), [padding](#padding)   | main.                                                      |
+| `HomePage`           | [data](#data), [style](#style)         | Pagina che contiene i 3 screen principali e la bottom bar. |
+| `HomeScreen`         | [children](#children), [scrollDirection](#scrollDirection) | Pagina principale. |
+| `GraphScreen`         | [children](#children), [scrollDirection](#scrollDirection) | Pagina dei grafici. |
+| `SettingScreen`         | [children](#children), [scrollDirection](#scrollDirection) | Pagina delle impostazioni. |
+| `TransactionsScreen`| [transactions](#tra),[dailyTransactions],[months],[keys],[dailyAmount],[paddingTitle],[lastDocument],[scrollController],[transactionsExist],[ fetchTransactions()] | Pagina che visualizza tutte le transazioni-|
 
-A new Flutter project.
 
-## Getting Started
+#### `transactions` {#tra}
 
-This project is a starting point for a Flutter application.
+#### `color`
+L'attributo `color` imposta il colore di sfondo del widget `Container`.
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
