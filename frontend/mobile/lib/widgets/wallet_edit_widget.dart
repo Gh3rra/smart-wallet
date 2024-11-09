@@ -36,8 +36,7 @@ class _WalletEditWidgetState extends State<WalletEditWidget> {
     super.initState();
     color = widget.color;
     nameController = TextEditingController(text: widget.name);
-    amountController =
-        TextEditingController(text: formatDoubleToString(widget.amount));
+    amountController = TextEditingController(text: widget.amount.toString().replaceAll(".", ","));
   }
 
   submit() async {
@@ -62,35 +61,47 @@ class _WalletEditWidgetState extends State<WalletEditWidget> {
     setState(() {
       isLoadingDelete = true;
     });
-    await showDialog(
+    showGeneralDialog(
         context: context,
-        builder: (dialogContext) => AlertDialog(
-              title: const Text("Eliminare il portafoglio?"),
-              actions: [
-                TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text("No",
-                        style: TextStyle(
-                            fontSize: 20,
+        pageBuilder: (dialogContext, animation, secondaryAnimation) =>
+            const SizedBox(),
+        transitionBuilder: (dialogContext, animation, secondaryAnimation,
+                child) =>
+            Transform.scale(
+              scale: animation.value,
+              child: AlertDialog(
+                title: const Text(
+                  "Eliminare il portafoglio?",
+                  style: TextStyle(fontSize: 17),
+                ),
+                backgroundColor: Theme.of(context).colorScheme.secondary,
+                actions: [
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text("No",
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                              color: Theme.of(context).colorScheme.onSurface))),
+                  TextButton(
+                      onPressed: () async {
+                        Navigator.pop(dialogContext);
+                        await Db().deleteWallet(
+                            walletId: widget.walletId, amount: widget.amount);
+                        Navigator.pop(context);
+                      },
+                      child: Text("Si",
+                          style: TextStyle(
                             fontWeight: FontWeight.w500,
-                            color: Theme.of(context).colorScheme.onSurface))),
-                TextButton(
-                    onPressed: () async {
-                      Navigator.pop(dialogContext);
-                      await Db().deleteWallet(
-                          walletId: widget.walletId, amount: widget.amount);
-                      Navigator.pop(context);
-                    },
-                    child: Text("Si",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 20,
-                          color: Theme.of(context).colorScheme.onSurface,
-                        ))),
-              ],
-            ));
+                            fontSize: 18,
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ))),
+                ],
+              ),
+            ),
+        transitionDuration: const Duration(milliseconds: 100));
 
     setState(() {
       isLoadingDelete = false;
@@ -123,7 +134,7 @@ class _WalletEditWidgetState extends State<WalletEditWidget> {
                         Text(
                           "Aggiungi Portafoglio",
                           style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 16,
                               color: Theme.of(context).colorScheme.onSurface),
                         ),
                         IconButton(
@@ -135,7 +146,7 @@ class _WalletEditWidgetState extends State<WalletEditWidget> {
                           constraints:
                               const BoxConstraints(maxHeight: 50, maxWidth: 50),
                           onPressed: () async {
-                           await  showDialog(
+                            await showDialog(
                               context: context,
                               builder: (context) => AlertDialog(
                                 backgroundColor:
@@ -146,7 +157,7 @@ class _WalletEditWidgetState extends State<WalletEditWidget> {
                                       color: Theme.of(context)
                                           .colorScheme
                                           .onSurface,
-                                      fontSize: 18),
+                                      fontSize: 16),
                                 ),
                                 content: SizedBox(
                                   height: 200,
@@ -170,7 +181,7 @@ class _WalletEditWidgetState extends State<WalletEditWidget> {
                                       "SALVA",
                                       style: TextStyle(
                                           fontWeight: FontWeight.w500,
-                                          fontSize: 19,
+                                          fontSize: 16,
                                           color: Theme.of(context)
                                               .colorScheme
                                               .onSurface),
@@ -193,6 +204,8 @@ class _WalletEditWidgetState extends State<WalletEditWidget> {
                     ),
                     IntrinsicHeight(
                       child: TextFormField(
+                        keyboardType: TextInputType.text,
+                        textCapitalization: TextCapitalization.sentences,
                         controller: nameController,
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -201,7 +214,7 @@ class _WalletEditWidgetState extends State<WalletEditWidget> {
                           return null;
                         },
                         style: TextStyle(
-                            fontSize: 19,
+                            fontSize: 16,
                             fontWeight: FontWeight.w400,
                             color: Theme.of(context).colorScheme.onSurface),
                         decoration: InputDecoration(
@@ -239,7 +252,7 @@ class _WalletEditWidgetState extends State<WalletEditWidget> {
                           return null;
                         },
                         style: TextStyle(
-                            fontSize: 19,
+                            fontSize: 16,
                             fontWeight: FontWeight.w400,
                             color: Theme.of(context).colorScheme.onSurface),
                         keyboardType: const TextInputType.numberWithOptions(),
@@ -261,7 +274,7 @@ class _WalletEditWidgetState extends State<WalletEditWidget> {
                             prefixIcon: Text(
                               "€ ",
                               style: TextStyle(
-                                  fontSize: 19,
+                                  fontSize: 17,
                                   fontWeight: FontWeight.w400,
                                   color:
                                       Theme.of(context).colorScheme.onSurface),
@@ -281,15 +294,11 @@ class _WalletEditWidgetState extends State<WalletEditWidget> {
                   onPressed: isLoading == false && isLoadingDelete == false
                       ? delete
                       : null,
-                  icon: isLoadingDelete == false
-                      ? Icon(
-                          Icons.delete_rounded,
-                          size: 30,
-                          color: Theme.of(context).colorScheme.onSurface,
-                        )
-                      : CircularProgressIndicator(
-                          color: Theme.of(context).colorScheme.onSurface,
-                        ),
+                  icon: Icon(
+                    Icons.delete_rounded,
+                    size: 30,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
                 ),
                 TextButton(
                   onPressed: isLoading == false && isLoadingDelete == false
@@ -300,7 +309,7 @@ class _WalletEditWidgetState extends State<WalletEditWidget> {
                           "CONFERMA",
                           style: TextStyle(
                               fontWeight: FontWeight.w500,
-                              fontSize: 19,
+                              fontSize: 16,
                               color: Theme.of(context).colorScheme.onSurface),
                         )
                       : CircularProgressIndicator(

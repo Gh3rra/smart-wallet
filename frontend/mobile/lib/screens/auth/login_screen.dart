@@ -1,15 +1,19 @@
 // ignore_for_file: use_build_context_synchronously, avoid_print
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mobile/screens/auth/forgot_password_screen.dart';
+import 'package:mobile/screens/auth/signup_personal_data_screen.dart';
 import 'package:mobile/screens/auth/signup_screen.dart';
-import 'package:mobile/screens/home/home_page.dart';
+import 'package:mobile/screens/main/main_screen.dart';
+import 'package:mobile/theme/theme_manager.dart';
 import 'package:mobile/widgets/my_button.dart';
 import 'package:mobile/widgets/my_text_field.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -56,10 +60,11 @@ class _LoginScreenState extends State<LoginScreen> {
           isError = false;
           isLoadingLogIn = false;
         });
+        Provider.of<ThemeManager>(context, listen: false).initialize();
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
-            builder: (context) => const HomePage(),
+            builder: (context) => const MainScreen(),
           ),
           (route) => false,
         );
@@ -89,16 +94,43 @@ class _LoginScreenState extends State<LoginScreen> {
           await googleUser?.authentication;
       final credential = GoogleAuthProvider.credential(
           accessToken: googleAuth!.accessToken, idToken: googleAuth.idToken);
-      await FirebaseAuth.instance.signInWithCredential(credential);
+
+      QuerySnapshot<Map<String, dynamic>> user = await FirebaseFirestore
+          .instance
+          .collection("users")
+          .where("email", isEqualTo: googleUser!.email)
+          .get();
+      if (user.docs.isNotEmpty) {
+        setState(() {
+          isError = false;
+        });
+        await FirebaseAuth.instance.signInWithCredential(credential);
+        setState(() {
+          isLoadingGoogle = false;
+        });
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => const MainScreen()),
+          (route) => false,
+        );
+      } else {
+        setState(() {
+          isError = false;
+          isLoadingGoogle = false;
+        });
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SignUpPersonalDataScreen(
+                  isGoogleSignIn: true,
+                  email: googleUser.email,
+                  credential: credential),
+            ));
+      }
       setState(() {
         isError = false;
         isLoadingGoogle = false;
       });
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => const HomePage()),
-        (route) => false,
-      );
     } catch (e) {
       setState(() {
         isError = true;

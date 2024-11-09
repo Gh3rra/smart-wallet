@@ -6,7 +6,7 @@ import 'package:mobile/utils/utils.dart';
 class DateTransactionWidget extends StatelessWidget {
   const DateTransactionWidget(
       {super.key, required this.date, required this.totalAmount});
-  final DateTime date;
+  final String date;
   final double totalAmount;
 
   @override
@@ -17,7 +17,7 @@ class DateTransactionWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            DateFormat("dd/MM/yyyy").format(date),
+            date,
             style: TextStyle(
                 color: Theme.of(context).colorScheme.onSurface,
                 fontSize: 16,

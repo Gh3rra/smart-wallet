@@ -16,6 +16,7 @@ class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
   Widget build(BuildContext context) {
     final ThemeManager themeManager = Provider.of<ThemeManager>(context);
     bool isDarkMode = themeManager.themeMode == ThemeMode.dark;
+    bool isCapsLock = themeManager.isCapsLock;
     return Scaffold(
       appBar: AppBar(
         leading: Container(
@@ -31,15 +32,16 @@ class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
                   style: TextStyle(
                       fontFamily: Icons.arrow_back_rounded.fontFamily,
                       fontSize: 30,
-                      fontWeight: FontWeight.w800,color: Theme.of(context).colorScheme.onSurface),
+                      fontWeight: FontWeight.w800,
+                      color: Theme.of(context).colorScheme.onSurface),
                 ))),
         centerTitle: true,
-        title:  Text(
+        title: Text(
           "Generali",
           textAlign: TextAlign.start,
           style: TextStyle(
             color: Theme.of(context).colorScheme.onSurface,
-            fontSize: 25,
+            fontSize: 20,
             fontWeight: FontWeight.w500,
           ),
         ),
@@ -62,29 +64,32 @@ class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
                     const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.secondary,
-                  boxShadow:  [
+                  boxShadow: [
                     BoxShadow(
-                        color: Theme.of(context).colorScheme.shadow, blurRadius: 30, spreadRadius: -8),
+                        color: Theme.of(context).colorScheme.shadow,
+                        blurRadius: 30,
+                        spreadRadius: -8),
                   ],
                   borderRadius: BorderRadius.circular(40),
                 ),
                 child: Column(
                   children: [
                     SettingWidget(
-                      icon: Icons.format_size_rounded,
+                      prefixIcon: Icons.format_size_rounded,
                       title: "Titoli maiuscolo",
                       subTitle: "I titoli delle tue spese in maiuscolo",
-                      iconSize: 35,
+                      prefixIconSize: 35,
                       isSwitch: true,
-                      value: isSwitched,
+                      value: isCapsLock,
                       onChanged: (temp) => setState(() {
-                        isSwitched = temp;
+                        isCapsLock = temp;
+                        themeManager.toggleCapsLock(temp);
                       }),
                     ),
                     SettingWidget(
-                      icon: Icons.dark_mode_rounded,
+                      prefixIcon: Icons.dark_mode_rounded,
                       title: "Tema scuro",
-                      iconSize: 35,
+                      prefixIconSize: 35,
                       isSwitch: true,
                       value: isDarkMode,
                       onChanged: (temp) => setState(() {

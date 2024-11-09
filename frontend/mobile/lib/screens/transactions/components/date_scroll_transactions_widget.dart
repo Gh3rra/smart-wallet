@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class DateScrollTransactionsWidget extends StatefulWidget {
   const DateScrollTransactionsWidget(
@@ -9,7 +10,7 @@ class DateScrollTransactionsWidget extends StatefulWidget {
       required this.scrollController,
       required this.keys});
   final ScrollController scrollController;
-  final List<String> months;
+  final List<DateTime> months;
   final List<GlobalKey> keys;
 
   @override
@@ -23,22 +24,23 @@ class _DateScrollTransactionsWidgetState
   @override
   void initState() {
     super.initState();
-    widget.scrollController.addListener(() {
-      if (widget.scrollController.offset > 100 && isVisible == false) {
-        setState(() {
-          isVisible = true;
-        });
-      } else if (widget.scrollController.offset < 100 && isVisible == true) {
-        setState(() {
-          isVisible = false;
-        });
-      }
-    });
+    if (widget.months.length > 1) {
+      widget.scrollController.addListener(() {
+        if (widget.scrollController.offset > 100 && isVisible == false) {
+          setState(() {
+            isVisible = true;
+          });
+        } else if (widget.scrollController.offset < 100 && isVisible == true) {
+          setState(() {
+            isVisible = false;
+          });
+        }
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    print(widget.keys);
     return isVisible == true
         ? AnimatedPositioned(
             top: 80,
@@ -56,15 +58,19 @@ class _DateScrollTransactionsWidgetState
                   return GestureDetector(
                     onTap: () async {
                       await Scrollable.ensureVisible(
-                        duration: const Duration(milliseconds: 500),
-                        alignment: 0.07,
+                          duration: const Duration(milliseconds: 500),
+                          alignment: 0.07,
                           widget.keys[index].currentContext!);
                     },
                     child: Container(
                       alignment: Alignment.center,
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Text(
-                        widget.months[index],
+                        widget.months[index].year == DateTime.now().year
+                            ? DateFormat("MMMM", "it_IT")
+                                .format(widget.months[index])
+                            : DateFormat("MMMM yyyy", "it_IT")
+                                .format(widget.months[index]),
                         style: const TextStyle(
                             fontWeight: FontWeight.w500, fontSize: 15),
                       ),

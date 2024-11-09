@@ -3,7 +3,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/screens/auth/signup_personal_data_screen.dart';
-import 'package:mobile/screens/home/home_page.dart';
+import 'package:mobile/screens/main/main_screen.dart';
 import 'package:mobile/services/db.dart';
 import 'package:mobile/widgets/my_button.dart';
 import 'package:mobile/widgets/my_text_field.dart';
@@ -66,7 +66,7 @@ class _SignUpPasswordScreenState extends State<SignUpPasswordScreen> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const HomePage(),
+                builder: (context) => const MainScreen(),
               ));
         } catch (e) {
           print(e);
@@ -122,7 +122,6 @@ class _SignUpPasswordScreenState extends State<SignUpPasswordScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               //LOGO
-
               Container(
                 padding: const EdgeInsets.only(left: 30),
                 alignment: Alignment.centerLeft,

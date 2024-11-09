@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class GraphsScreen extends StatelessWidget {
+  /// Pagina dei grafici
   const GraphsScreen({super.key});
 
   @override

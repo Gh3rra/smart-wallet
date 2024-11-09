@@ -3,7 +3,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/screens/auth/login_screen.dart';
-import 'package:mobile/screens/settings/account_settings._screen.dart';
+import 'package:mobile/screens/settings/account_settings_screen.dart';
 import 'package:mobile/screens/settings/category_settings_screen.dart';
 import 'package:mobile/screens/settings/general_settings_screen.dart';
 import 'package:mobile/screens/settings/import_export_screen.dart';
@@ -11,13 +11,16 @@ import 'package:mobile/widgets/colors.dart';
 import 'package:mobile/widgets/setting_widget.dart';
 
 class SettingsScreen extends StatelessWidget {
+  /// Pagina delle impostazioni
   const SettingsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         actions: [
+          // Back button
           Container(
             margin: const EdgeInsets.only(right: 20),
             child: IconButton(
@@ -44,6 +47,7 @@ class SettingsScreen extends StatelessWidget {
                 )),
           ),
         ],
+        // Title
         title: Container(
           padding: const EdgeInsets.only(left: 20),
           alignment: Alignment.centerLeft,
@@ -65,30 +69,29 @@ class SettingsScreen extends StatelessWidget {
         width: double.maxFinite,
         height: double.maxFinite,
         child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                margin:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.secondary,
-                  boxShadow:  [
-                    BoxShadow(
-                        color: Theme.of(context).colorScheme.shadow, blurRadius: 30, spreadRadius: -8),
-                  ],
-                  borderRadius: BorderRadius.circular(40),
-                ),
-                child: Column(
-                  children: [
-                    SettingWidget(
-                      icon: Icons.build_rounded,
-                      title: "Generali",
-                      iconSize: 30,
-                      onTap: () {
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.secondary,
+              boxShadow: [
+                BoxShadow(
+                    color: Theme.of(context).colorScheme.shadow,
+                    blurRadius: 30,
+                    spreadRadius: -8),
+              ],
+              borderRadius: BorderRadius.circular(40),
+            ),
+            child: Column(
+              children: [
+                SettingWidget(
+                  prefixIcon: Icons.build_rounded,
+                  title: "Generali",
+                  prefixIconSize: 30,
+                  onTap: () {
+                    Future.delayed(
+                      const Duration(milliseconds: 300),
+                      () {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -96,13 +99,18 @@ class SettingsScreen extends StatelessWidget {
                                   const GeneralSettingsScreen(),
                             ));
                       },
-                    ),
-                    SettingWidget(
-                      icon: Icons.person_rounded,
-                      title: "Account",
-                      subTitle: "Modifica le impostazioni account",
-                      iconSize: 30,
-                      onTap: () {
+                    );
+                  },
+                ),
+                SettingWidget(
+                  prefixIcon: Icons.person_rounded,
+                  title: "Account",
+                  subTitle: "Modifica le impostazioni account",
+                  prefixIconSize: 30,
+                  onTap: () {
+                    Future.delayed(
+                      const Duration(milliseconds: 300),
+                      () {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -110,13 +118,18 @@ class SettingsScreen extends StatelessWidget {
                                   const AccountSettingsScreen(),
                             ));
                       },
-                    ),
-                    SettingWidget(
-                      icon: Icons.category_rounded,
-                      title: "Categorie",
-                      subTitle: "Aggiungi,modifica o rimuovi categorie",
-                      iconSize: 30,
-                      onTap: () {
+                    );
+                  },
+                ),
+                SettingWidget(
+                  prefixIcon: Icons.category_rounded,
+                  title: "Categorie",
+                  subTitle: "Aggiungi,modifica o rimuovi categorie",
+                  prefixIconSize: 30,
+                  onTap: () {
+                    Future.delayed(
+                      const Duration(milliseconds: 300),
+                      () {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -124,24 +137,29 @@ class SettingsScreen extends StatelessWidget {
                                   const CategorySettingsScreen(),
                             ));
                       },
-                    ),
-                    SettingWidget(
-                      icon: Icons.download_rounded,
-                      title: "Importa/Esporta",
-                      subTitle: "Importa o esporta le tue spese",
-                      iconSize: 30,
-                      onTap: () {
+                    );
+                  },
+                ),
+                SettingWidget(
+                  prefixIcon: Icons.download_rounded,
+                  title: "Importa/Esporta",
+                  subTitle: "Importa o esporta le tue spese",
+                  prefixIconSize: 30,
+                  onTap: () {
+                    Future.delayed(
+                      const Duration(milliseconds: 200),
+                      () {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => const ImportExportScreen(),
                             ));
                       },
-                    ),
-                  ],
+                    );
+                  },
                 ),
-              )
-            ],
+              ],
+            ),
           ),
         ),
       ),

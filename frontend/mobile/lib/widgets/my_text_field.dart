@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 class MyTextField extends StatelessWidget {
   const MyTextField(
@@ -14,12 +16,16 @@ class MyTextField extends StatelessWidget {
       this.controller,
       this.validator,
       this.stateKey,
-      this.readOnly = false, this.onTap});
+      this.readOnly = false,
+      this.onTap,
+      this.textCapitalization = TextCapitalization.none,
+      this.focusNode, this.onFieldSubmitted, this.textInputAction});
   final Key? stateKey;
   final IconData? suffixIcon;
   final Widget? prefix;
   final String? label;
   final TextInputType? keyboardType;
+  final TextCapitalization? textCapitalization;
   final bool? obscureText;
   final bool? isDense;
   final EdgeInsetsGeometry? contentPadding;
@@ -28,15 +34,23 @@ class MyTextField extends StatelessWidget {
   final String? Function(String?)? validator;
   final bool? readOnly;
   final Function()? onTap;
-
+  final FocusNode? focusNode;
+  final void Function(String)? onFieldSubmitted;
+  final TextInputAction? textInputAction;
+  
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      onFieldSubmitted: onFieldSubmitted,
+      textInputAction: textInputAction,
+      focusNode: focusNode,
+      textCapitalization: textCapitalization!,
       key: stateKey,
       cursorErrorColor: Theme.of(context).colorScheme.onSurface,
       controller: controller,
       style: style,
-      onTap: onTap,      obscureText: obscureText != null ? obscureText! : false,
+      onTap: onTap,
+      obscureText: obscureText != null ? obscureText! : false,
       keyboardType: keyboardType,
       cursorColor: Theme.of(context).colorScheme.onSurface,
       readOnly: readOnly!,

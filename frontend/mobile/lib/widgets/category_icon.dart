@@ -1,16 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile/services/db.dart';
+import 'package:mobile/utils/category.dart';
 
 class CategoryIcon extends StatelessWidget {
   const CategoryIcon({
     super.key,
-    required this.category,
     required this.size,
     required this.type,
-    this.margin, required this.categoryIcon,
+    this.margin,
+    required this.categoryIcon,
   });
 
   final String type;
-  final String category;
   final int categoryIcon;
   final double size;
   final EdgeInsetsGeometry? margin;
@@ -26,7 +28,7 @@ class CategoryIcon extends StatelessWidget {
                 ? Theme.of(context).colorScheme.onPrimary
                 : Theme.of(context).colorScheme.onSecondary),
         child: Icon(
-          IconData(categoryIcon,fontFamily: "MaterialIcons"),
+          IconData(categoryIcon, fontFamily: "MaterialIcons"),
           size: size,
           color: Colors.white,
         ));

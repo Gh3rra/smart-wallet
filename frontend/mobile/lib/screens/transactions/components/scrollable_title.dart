@@ -1,24 +1,28 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile/screens/transactions/date_scroll_transactions_widget.dart';
+import 'package:mobile/screens/transactions/components/date_scroll_transactions_widget.dart';
 
-class AnimatedTitle extends StatefulWidget {
-  const AnimatedTitle(
+class ScrollableTitle extends StatefulWidget {
+  const ScrollableTitle(
       {super.key, required this.scrollController, required this.text});
   final ScrollController scrollController;
   final String text;
 
   @override
-  State<AnimatedTitle> createState() => _AnimatedTitleState();
+  State<ScrollableTitle> createState() => _ScrollableTitleState();
 }
 
-class _AnimatedTitleState extends State<AnimatedTitle> {
+class _ScrollableTitleState extends State<ScrollableTitle> {
   double paddingTitle = 20;
+
   @override
   void initState() {
     super.initState();
     widget.scrollController.addListener(() {
-      if (widget.scrollController.offset < 50) {
+      if (widget.scrollController.offset < 50 &&
+          widget.scrollController.offset > 0) {
         setState(() {
           paddingTitle = 20 + widget.scrollController.offset;
         });

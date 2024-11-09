@@ -1,12 +1,22 @@
+// ignore_for_file: avoid_print
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/screens/auth/signup_password_screen.dart';
-import 'package:mobile/screens/home/home_page.dart';
+import 'package:mobile/screens/main/main_screen.dart';
+import 'package:mobile/services/db.dart';
 import 'package:mobile/widgets/my_button.dart';
 import 'package:mobile/widgets/my_text_field.dart';
 
 class SignUpPersonalDataScreen extends StatefulWidget {
-  const SignUpPersonalDataScreen({super.key, required this.email});
+  const SignUpPersonalDataScreen(
+      {super.key,
+      required this.email,
+      this.isGoogleSignIn = false,
+      this.credential});
   final String email;
+  final bool isGoogleSignIn;
+  final OAuthCredential? credential;
 
   @override
   State<SignUpPersonalDataScreen> createState() =>
@@ -46,7 +56,7 @@ class _SignUpPersonalDataScreenState extends State<SignUpPersonalDataScreen> {
     return true;
   }
 
-  submit() {
+  submit() async {
     setState(() {
       isLoading = true;
     });
@@ -58,7 +68,29 @@ class _SignUpPersonalDataScreenState extends State<SignUpPersonalDataScreen> {
         isSurnameError = false;
         isLoading = false;
       });
-      Navigator.pushAndRemoveUntil(
+      if (widget.isGoogleSignIn) {
+        setState(() {
+          isLoading = true;
+        });
+        try {
+          await FirebaseAuth.instance.signInWithCredential(widget.credential!);
+          await Db().createUser(
+              email: widget.email,
+              name: _nameController.text,
+              surname: _surnameController.text);
+          setState(() {
+            isLoading = false;
+          });
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const MainScreen(),
+              ));
+        } catch (e) {
+          print(e);
+        }
+      } else {
+        Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => SignUpPasswordScreen(
@@ -66,7 +98,8 @@ class _SignUpPersonalDataScreenState extends State<SignUpPersonalDataScreen> {
                     name: _nameController.text,
                     surname: _surnameController.text,
                   )),
-          (route) => false);
+        );
+      }
     }
     setState(() {
       isLoading = false;
@@ -129,6 +162,7 @@ class _SignUpPersonalDataScreenState extends State<SignUpPersonalDataScreen> {
                       MyTextField(
                         controller: _nameController,
                         label: "Nome",
+                        textInputAction: TextInputAction.next,
                       ),
                       isNameError
                           ? Column(
@@ -188,6 +222,7 @@ class _SignUpPersonalDataScreenState extends State<SignUpPersonalDataScreen> {
                       ),
                       MyButton(
                         onPressed: isLoading == false ? submit : null,
+                        isLoading: isLoading,
                         radius: 15,
                         height: 60,
                         text: "Continua",

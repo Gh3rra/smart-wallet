@@ -38,6 +38,15 @@ class _AddWalletWidgetState extends State<AddWalletWidget> {
     });
   }
 
+  showAddWalletWidget() async {
+    await showGeneralDialog(
+      context: context,
+      pageBuilder: (context, animation, secondaryAnimation) => const SizedBox(),
+      transitionBuilder: (context, animation, secondaryAnimation, child) =>
+          const AddWalletWidget(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     Color currentColor = color;
@@ -64,7 +73,7 @@ class _AddWalletWidgetState extends State<AddWalletWidget> {
                         Text(
                           "Aggiungi Portafoglio",
                           style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 16,
                               color: Theme.of(context).colorScheme.onSurface),
                         ),
                         IconButton(
@@ -87,7 +96,7 @@ class _AddWalletWidgetState extends State<AddWalletWidget> {
                                       color: Theme.of(context)
                                           .colorScheme
                                           .onSurface,
-                                      fontSize: 18),
+                                      fontSize: 16),
                                 ),
                                 content: SizedBox(
                                   height: 200,
@@ -111,7 +120,7 @@ class _AddWalletWidgetState extends State<AddWalletWidget> {
                                       "CONFERMA",
                                       style: TextStyle(
                                           fontWeight: FontWeight.w500,
-                                          fontSize: 19,
+                                          fontSize: 16,
                                           color: Theme.of(context)
                                               .colorScheme
                                               .onSurface),
@@ -134,6 +143,8 @@ class _AddWalletWidgetState extends State<AddWalletWidget> {
                     ),
                     IntrinsicHeight(
                       child: TextFormField(
+                        keyboardType: TextInputType.text,
+                        textCapitalization: TextCapitalization.sentences,
                         controller: nameController,
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -142,7 +153,7 @@ class _AddWalletWidgetState extends State<AddWalletWidget> {
                           return null;
                         },
                         style: TextStyle(
-                            fontSize: 19,
+                            fontSize: 16,
                             fontWeight: FontWeight.w400,
                             color: Theme.of(context).colorScheme.onSurface),
                         decoration: InputDecoration(
@@ -180,7 +191,7 @@ class _AddWalletWidgetState extends State<AddWalletWidget> {
                           return null;
                         },
                         style: TextStyle(
-                            fontSize: 19,
+                            fontSize: 16,
                             fontWeight: FontWeight.w400,
                             color: Theme.of(context).colorScheme.onSurface),
                         keyboardType: const TextInputType.numberWithOptions(),
@@ -202,7 +213,7 @@ class _AddWalletWidgetState extends State<AddWalletWidget> {
                             prefixIcon: Text(
                               "€ ",
                               style: TextStyle(
-                                  fontSize: 19,
+                                  fontSize: 17,
                                   fontWeight: FontWeight.w400,
                                   color:
                                       Theme.of(context).colorScheme.onSurface),
@@ -226,7 +237,7 @@ class _AddWalletWidgetState extends State<AddWalletWidget> {
                     "ANNULLA",
                     style: TextStyle(
                         fontWeight: FontWeight.w500,
-                        fontSize: 19,
+                        fontSize: 16,
                         color: Theme.of(context).colorScheme.onSurface),
                   ),
                 ),
@@ -236,7 +247,7 @@ class _AddWalletWidgetState extends State<AddWalletWidget> {
                     "CONFERMA",
                     style: TextStyle(
                         fontWeight: FontWeight.w500,
-                        fontSize: 19,
+                        fontSize: 16,
                         color: Theme.of(context).colorScheme.onSurface),
                   ),
                 )

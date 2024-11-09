@@ -9,7 +9,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mobile/screens/auth/login_screen.dart';
 import 'package:mobile/screens/auth/signup_password_screen.dart';
 import 'package:mobile/screens/auth/signup_personal_data_screen.dart';
-import 'package:mobile/screens/home/home_page.dart';
+import 'package:mobile/screens/main/main_screen.dart';
 import 'package:mobile/widgets/my_button.dart';
 import 'package:mobile/widgets/my_text_field.dart';
 
@@ -54,7 +54,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
       } else {
         setState(() {
           isExist = false;
-
           isError = false;
           isLoadingSignUp = false;
         });
@@ -84,25 +83,48 @@ class _SignUpScreenState extends State<SignUpScreen> {
     });
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-
       final GoogleSignInAuthentication? googleAuth =
           await googleUser?.authentication;
-
       final credential = GoogleAuthProvider.credential(
           accessToken: googleAuth!.accessToken, idToken: googleAuth.idToken);
 
-      await FirebaseAuth.instance.signInWithCredential(credential);
+      QuerySnapshot<Map<String, dynamic>> user = await FirebaseFirestore
+          .instance
+          .collection("users")
+          .where("email", isEqualTo: googleUser!.email)
+          .get();
+      if (user.docs.isNotEmpty) {
+        setState(() {
+          isError = false;
+        });
+        await FirebaseAuth.instance.signInWithCredential(credential);
+        setState(() {
+          isLoadingGoogle = false;
+        });
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => const MainScreen()),
+          (route) => false,
+        );
+      } else {
+        setState(() {
+          isError = false;
+          isLoadingGoogle = false;
+        });
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SignUpPersonalDataScreen(
+                  isGoogleSignIn: true,
+                  email: googleUser.email,
+                  credential: credential),
+            ));
+      }
+
       setState(() {
         isError = false;
         isLoadingGoogle = false;
       });
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const HomePage(),
-        ),
-        (route) => false,
-      );
     } catch (e) {
       setState(() {
         isLoadingGoogle = false;

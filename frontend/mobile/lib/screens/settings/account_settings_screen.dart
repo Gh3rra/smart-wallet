@@ -36,7 +36,7 @@ class AccountSettingsScreen extends StatelessWidget {
           textAlign: TextAlign.start,
           style: TextStyle(
             color: Theme.of(context).colorScheme.onSurface,
-            fontSize: 25,
+            fontSize: 20,
             fontWeight: FontWeight.w500,
           ),
         ),
@@ -71,43 +71,59 @@ class AccountSettingsScreen extends StatelessWidget {
                   children: [
                     SettingWidget(
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const ChangeEmailScreen(),
-                            ));
+                        Future.delayed(
+                          const Duration(milliseconds: 300),
+                          () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const ChangeEmailScreen(),
+                                ));
+                          },
+                        );
                       },
-                      icon: Icons.email_outlined,
+                      prefixIcon: Icons.email_outlined,
                       title: "Cambia email",
-                      iconSize: 35,
+                      prefixIconSize: 35,
                     ),
                     SettingWidget(
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  const ChangePasswordScreen(),
-                            ));
+                        Future.delayed(
+                          const Duration(milliseconds: 300),
+                          () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const ChangePasswordScreen(),
+                                ));
+                          },
+                        );
                       },
-                      icon: Icons.password_rounded,
+                      prefixIcon: Icons.password_rounded,
                       title: "Modifica Password",
-                      iconSize: 35,
+                      prefixIconSize: 35,
                     ),
                     SettingWidget(
                       onTap: () async {
-                        await Db().deleteAccount();
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const LoginScreen(),
-                          ),
-                          (route) => false,
+                        //await Db().deleteAccount();
+                        Future.delayed(
+                          const Duration(milliseconds: 300),
+                          () {
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const LoginScreen(),
+                              ),
+                              (route) => false,
+                            );
+                          },
                         );
                       },
-                      icon: Icons.delete_forever_rounded,
+                      prefixIcon: Icons.delete_forever_rounded,
                       title: "Elimina Account",
-                      iconSize: 35,
+                      prefixIconSize: 35,
                     ),
                   ],
                 ),

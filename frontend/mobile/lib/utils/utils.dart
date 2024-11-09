@@ -1,22 +1,20 @@
 import 'dart:math';
-
+import 'package:intl/intl.dart';
 import 'package:mobile/utils/wallet_color.dart';
 
 String formatDoubleToString(double num) {
-  if (num % 1 == 0) {
-    return num.toStringAsFixed(0);
-  } else {
-    return num.toStringAsFixed(2).replaceAll(".", ",");
-  }
+  return NumberFormat("#,###.##", "it_IT").format(num);
 }
 
 double formatDoubleFromString(String num) {
-  double n = double.parse(num.replaceAll(",", "."));
-  return double.parse(formatDoubleToString(n).replaceAll(",", "."));
+  double n = NumberFormat("#,###.##", "it_IT")
+      .parse(num.replaceAll(".", ","))
+      .toDouble();
+  return n;
 }
 
 formatDouble(double num) {
-  return formatDoubleFromString(formatDoubleToString(num));
+  return formatDoubleFromString(NumberFormat("###.##").format(num));
 }
 
 int getRandomColorValue() {

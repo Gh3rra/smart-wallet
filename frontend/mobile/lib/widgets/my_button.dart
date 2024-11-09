@@ -13,7 +13,8 @@ class MyButton extends StatelessWidget {
       this.fontWeight,
       this.shadowColor,
       this.color,
-      this.isLoading = false});
+      this.isLoading = false,
+      this.padding});
   final String text;
   final double? fontSize;
   final FontWeight? fontWeight;
@@ -25,6 +26,7 @@ class MyButton extends StatelessWidget {
   final Color? shadowColor;
   final Color? color;
   final bool isLoading;
+  final EdgeInsets? padding;
 
   @override
   Widget build(BuildContext context) {
@@ -41,10 +43,9 @@ class MyButton extends StatelessWidget {
       ),
       height: height,
       child: ElevatedButton(
-        
         onPressed: onPressed,
         style: ButtonStyle(
-          
+          padding: WidgetStatePropertyAll(padding),
           shape: WidgetStatePropertyAll(RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(radius)))),
           backgroundColor: WidgetStatePropertyAll(backgroundColor),

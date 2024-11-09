@@ -34,19 +34,30 @@ class _WalletCardState extends State<WalletCard> {
           left: widget.firstCard == true ? 25 : 20,
           right: widget.lastCard == true ? 25 : 20),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      decoration: BoxDecoration(
-          color: widget.color, borderRadius: BorderRadius.circular(15)),
+      decoration: BoxDecoration(boxShadow: [
+        BoxShadow(
+            color: Theme.of(context).colorScheme.shadow,
+            blurRadius: 30,
+            spreadRadius: -8),
+      ], color: widget.color, borderRadius: BorderRadius.circular(15)),
       child: InkWell(
         onTap: () async {
-          await showDialog(
-            context: context,
-            builder: (context) => WalletEditWidget(
-              walletId: widget.walletId,
-              name: widget.name,
-              amount: widget.amount,
-              color: widget.color,
-            ),
-          );
+          await showGeneralDialog(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const SizedBox(),
+              context: context,
+              transitionBuilder:
+                  (context, animation, secondaryAnimation, child) =>
+                      Transform.scale(
+                        scale: animation.value,
+                        child: WalletEditWidget(
+                          walletId: widget.walletId,
+                          name: widget.name,
+                          amount: widget.amount,
+                          color: widget.color,
+                        ),
+                      ),
+              transitionDuration: const Duration(milliseconds: 100));
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,7 +66,7 @@ class _WalletCardState extends State<WalletCard> {
             Text(
               widget.name,
               style: TextStyle(
-                  color: textColor, fontSize: 20, fontWeight: FontWeight.w500),
+                  color: textColor, fontSize: 17, fontWeight: FontWeight.w500),
             ),
             const SizedBox(
               height: 5,
@@ -63,7 +74,7 @@ class _WalletCardState extends State<WalletCard> {
             Text("€ ${formatDoubleToString(widget.amount)}",
                 style: TextStyle(
                     color: textColor,
-                    fontSize: 20,
+                    fontSize: 18,
                     fontWeight: FontWeight.w500))
           ],
         ),

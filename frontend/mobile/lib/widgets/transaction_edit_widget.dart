@@ -21,6 +21,7 @@ class TransactionEditWidget extends StatefulWidget {
     required this.categoryId,
     required this.transactionId,
     this.fetchTransactions,
+    required this.onUpdate,
   });
   final String transactionId;
   final String title;
@@ -29,6 +30,7 @@ class TransactionEditWidget extends StatefulWidget {
   final DateTime date;
   final String categoryId;
   final Function()? fetchTransactions;
+  final Function(Map<String, dynamic> transaction) onUpdate;
 
   @override
   State<TransactionEditWidget> createState() => _TransactionEditWidgetState();
@@ -114,6 +116,7 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
     setState(() {
       isLoading = true;
     });
+
     if (formKey.currentState!.validate()) {
       await Db().editTransaction(
           title: titleController.text,
@@ -126,6 +129,16 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
       if (widget.fetchTransactions != null) {
         widget.fetchTransactions!();
       }
+      Map<String, dynamic> transaction = {
+        "title": titleController.text,
+        "amount": formatDoubleFromString(amountController.text),
+        "date": selectedDate,
+        "category": {
+          "icon": selectedCategory!["icon"],
+          "name": selectedCategory!["name"],
+        }
+      };
+      widget.onUpdate(transaction);
       Navigator.pop(context);
     }
     setState(() {
@@ -172,6 +185,9 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
                             //TITLE
                             IntrinsicHeight(
                               child: TextFormField(
+                                keyboardType: TextInputType.text,
+                                textCapitalization:
+                                    TextCapitalization.sentences,
                                 controller: titleController,
                                 validator: (value) {
                                   if (value!.isEmpty) {
@@ -385,25 +401,18 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             TextButton(
-                              onPressed: isLoading == false
-                                  ? () => Navigator.pop(context)
-                                  : null,
-                              child: isLoading == false
-                                  ? Text(
-                                      "ANNULLA",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 19,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onSurface),
-                                    )
-                                  : CircularProgressIndicator(
+                                onPressed: isLoading == false
+                                    ? () => Navigator.pop(context)
+                                    : null,
+                                child: Text(
+                                  "ANNULLA",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 19,
                                       color: Theme.of(context)
                                           .colorScheme
-                                          .onSurface,
-                                    ),
-                            ),
+                                          .onSurface),
+                                )),
                             TextButton(
                               onPressed: isLoading == false ? submit : null,
                               child: isLoading == false

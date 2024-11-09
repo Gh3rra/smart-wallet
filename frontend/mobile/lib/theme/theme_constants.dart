@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 ThemeData lightTheme = ThemeData(
   inputDecorationTheme: const InputDecorationTheme(
       focusedBorder: UnderlineInputBorder(
-          borderSide:
-              BorderSide(style: BorderStyle.solid, width:2,color:  Color(0xFF232323)))),
+          borderSide: BorderSide(
+              style: BorderStyle.solid, width: 2, color: Color(0xFF232323)))),
   textSelectionTheme: const TextSelectionThemeData(
       cursorColor: Colors.black,
       selectionColor: Color(0xff909092),
@@ -23,7 +23,8 @@ ThemeData lightTheme = ThemeData(
       tertiary: Color(0xffEDEFF3),
       onTertiary: Color(0xff909092),
       onTertiaryFixed: Color(0xff6B6B6B),
-      surfaceContainer: Color(0xFFD1E4FF), //BUTTON BACKGROUND
+      surfaceContainer: Color(0xFFD1E4FF), //BUTTON BACKGROUND,
+      onPrimaryContainer: Color.fromARGB(255, 219, 234, 255),
       shadow: Color(0x25000000) //SHADOW
       ),
   useMaterial3: true,
@@ -39,7 +40,7 @@ ThemeData darkTheme = ThemeData(
       brightness: Brightness.dark,
       primary: Colors.black, //BLACK
       onPrimary: Color(0xff6197FF), //BLUE
-      secondary: Color(0xFF1C1C1E), //SECONDARY BACKGROUND
+      secondary: Color.fromARGB(255, 42, 42, 42), //SECONDARY BACKGROUND
       onSecondary: Color(0xffFF6161), //RED
       error: Colors.red,
       onError: Colors.red,
@@ -49,6 +50,7 @@ ThemeData darkTheme = ThemeData(
       onTertiary: Color(0xff909092),
       onTertiaryFixed: Color(0xff6B6B6B),
       surfaceContainer: Color(0xff1A2330), //BUTTON BACKGROUND
+      onPrimaryContainer: Color(0xFF283547),
       shadow: Colors.transparent),
   useMaterial3: true,
 );

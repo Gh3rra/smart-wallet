@@ -1,26 +1,25 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:mobile/screens/transactions/animated_title.dart';
 import 'package:mobile/services/auth.dart';
 import 'package:mobile/services/db.dart';
+import 'package:mobile/theme/theme_manager.dart';
 import 'package:mobile/utils/utils.dart';
-import 'package:mobile/widgets/colors.dart';
 import 'package:mobile/widgets/my_button.dart';
 import 'package:mobile/widgets/my_text_field.dart';
+import 'package:provider/provider.dart';
 
-class AddTransactionScreen extends StatefulWidget {
-  const AddTransactionScreen({super.key});
+class StepWidget extends StatefulWidget {
+  const StepWidget({super.key});
 
   @override
-  State<AddTransactionScreen> createState() => _AddTransactionScreenState();
+  State<StepWidget> createState() => _StepWidgetState();
 }
 
-class _AddTransactionScreenState extends State<AddTransactionScreen> {
+class _StepWidgetState extends State<StepWidget> {
   String userId = AuthService().userId;
   int step = 0;
   int stepReached = 0;
@@ -31,7 +30,6 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
   bool amountError = false;
   bool titleError = false;
   bool categoryError = false;
-  final ScrollController _scrollController = ScrollController();
   String? type;
   final TextEditingController amountController = TextEditingController();
   final TextEditingController titleController = TextEditingController();
@@ -39,7 +37,6 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
   DateTime selectedDate = DateTime.now();
   QueryDocumentSnapshot<Map<String, dynamic>>? category;
   QueryDocumentSnapshot<Map<String, dynamic>>? wallet;
-
   List<DropdownMenuItem> categoryList = [];
   List<DropdownMenuItem> walletList = [
     const DropdownMenuItem(
@@ -47,6 +44,8 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
       child: Text("NON SPECIFICATO"),
     )
   ];
+  FocusNode focusAmount = FocusNode();
+  FocusNode focusTitle = FocusNode();
 
   @override
   void initState() {
@@ -168,6 +167,31 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
     });
   }
 
+  submitAmount() {
+    if (validateAmount()) {
+      setState(() {
+        step++;
+        if (step > stepReached) {
+          stepReached = step;
+        }
+        Future.delayed(const Duration(milliseconds: 200), () {
+          focusTitle.requestFocus();
+        });
+      });
+    }
+  }
+
+  submitTitle() {
+    if (validateTitle()) {
+      setState(() {
+        step++;
+        if (step > stepReached) {
+          stepReached = step;
+        }
+      });
+    }
+  }
+
   submit() async {
     setState(() {
       isLoading = true;
@@ -203,43 +227,56 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                   ? Theme.of(context).colorScheme.onSurface
                   : Colors.transparent),
           content: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
+            padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                MyButton(
-                  onPressed: () {
-                    setState(() {
-                      type = "ENTRATA";
-                      step++;
-                      if (step > stepReached) stepReached = step;
-                    });
-                    setCategoryList();
-                  },
-                  text: "ENTRATA",
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                  backgroundColor: Theme.of(context).colorScheme.onPrimary,
-                  height: 40,
-                  radius: 20,
-                  color: Theme.of(context).colorScheme.primary,
+                SizedBox(
+                  width: 110,
+                  child: MyButton(
+                    padding: EdgeInsets.zero,
+                    onPressed: () {
+                      setState(() {
+                        type = "ENTRATA";
+                        step++;
+                        if (step > stepReached) stepReached = step;
+                      });
+                      setCategoryList();
+                      Future.delayed(const Duration(milliseconds: 200), () {
+                        focusAmount.requestFocus();
+                      });
+                    },
+                    text: "ENTRATA",
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    backgroundColor: Theme.of(context).colorScheme.onPrimary,
+                    height: 40,
+                    radius: 20,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
                 ),
-                MyButton(
-                  onPressed: () {
-                    setState(() {
-                      type = "USCITA";
-                      step++;
-                      if (step > stepReached) stepReached = step;
-                    });
-                    setCategoryList();
-                  },
-                  text: "USCITA",
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                  backgroundColor: Theme.of(context).colorScheme.onSecondary,
-                  height: 40,
-                  radius: 20,
-                  color: Theme.of(context).colorScheme.primary,
+                SizedBox(
+                  width: 110,
+                  child: MyButton(
+                    onPressed: () {
+                      setState(() {
+                        type = "USCITA";
+                        step++;
+                        if (step > stepReached) stepReached = step;
+                      });
+                      setCategoryList();
+                      Future.delayed(const Duration(milliseconds: 200), () {
+                        focusAmount.requestFocus();
+                      });
+                    },
+                    text: "USCITA",
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    backgroundColor: Theme.of(context).colorScheme.onSecondary,
+                    height: 40,
+                    radius: 20,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
                 )
               ],
             ),
@@ -263,9 +300,14 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
               children: [
                 IntrinsicWidth(
                   child: MyTextField(
+                    textInputAction: TextInputAction.go,
+                    onFieldSubmitted: (e) {
+                      submitAmount();
+                    },
+                    focusNode: focusAmount,
                     controller: amountController,
                     style: const TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.w500),
+                        fontSize: 16, fontWeight: FontWeight.w400),
                     prefix: Container(
                       padding: const EdgeInsets.only(left: 15),
                       child: const Text(
@@ -300,7 +342,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                           step--;
                         });
                       },
-                      fontSize: 15,
+                      fontSize: 14,
                       text: "INDIETRO",
                       backgroundColor: Theme.of(context).colorScheme.onSurface,
                       height: 40,
@@ -308,17 +350,8 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                       color: Theme.of(context).colorScheme.secondary,
                     ),
                     MyButton(
-                      onPressed: () {
-                        if (validateAmount()) {
-                          setState(() {
-                            step++;
-                            if (step > stepReached) {
-                              stepReached = step;
-                            }
-                          });
-                        }
-                      },
-                      fontSize: 15,
+                      onPressed: submitAmount,
+                      fontSize: 14,
                       text: "CONTINUA",
                       backgroundColor: Theme.of(context).colorScheme.onSurface,
                       height: 40,
@@ -350,9 +383,18 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: MyTextField(
+                    onFieldSubmitted: (e) {
+                      submitTitle();
+                    },
+                    focusNode: focusTitle,
+                    keyboardType: TextInputType.text,
+                    textCapitalization:
+                        Provider.of<ThemeManager>(context).isCapsLock == true
+                            ? TextCapitalization.characters
+                            : TextCapitalization.sentences,
                     controller: titleController,
                     style: const TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.w500),
+                        fontSize: 16, fontWeight: FontWeight.w400),
                     prefix: Container(
                       padding: const EdgeInsets.only(left: 10),
                       child: const Icon(
@@ -384,8 +426,11 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                         setState(() {
                           step--;
                         });
+                        Future.delayed(const Duration(milliseconds: 200), () {
+                          focusAmount.requestFocus();
+                        });
                       },
-                      fontSize: 15,
+                      fontSize: 14,
                       text: "INDIETRO",
                       backgroundColor: Theme.of(context).colorScheme.onSurface,
                       height: 40,
@@ -393,17 +438,8 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                       color: Theme.of(context).colorScheme.primary,
                     ),
                     MyButton(
-                      onPressed: () {
-                        if (validateTitle()) {
-                          setState(() {
-                            step++;
-                            if (step > stepReached) {
-                              stepReached = step;
-                            }
-                          });
-                        }
-                      },
-                      fontSize: 15,
+                      onPressed: submitTitle,
+                      fontSize: 14,
                       text: "CONTINUA",
                       backgroundColor: Theme.of(context).colorScheme.onSurface,
                       height: 40,
@@ -482,9 +518,9 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                     },
                     readOnly: true,
                     style: const TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.w500),
+                        fontSize: 16, fontWeight: FontWeight.w400),
                     prefix: Container(
-                      padding: const EdgeInsets.only(left: 10),
+                      padding: const EdgeInsets.only(left: 10, right: 5),
                       child: const Icon(
                         Icons.calendar_month_rounded,
                         size: 27,
@@ -503,8 +539,11 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                         setState(() {
                           step--;
                         });
+                        Future.delayed(const Duration(milliseconds: 200), () {
+                          focusTitle.requestFocus();
+                        });
                       },
-                      fontSize: 15,
+                      fontSize: 14,
                       text: "INDIETRO",
                       backgroundColor: Theme.of(context).colorScheme.onSurface,
                       height: 40,
@@ -520,7 +559,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                           }
                         });
                       },
-                      fontSize: 15,
+                      fontSize: 14,
                       text: "CONTINUA",
                       backgroundColor: Theme.of(context).colorScheme.onSurface,
                       height: 40,
@@ -623,7 +662,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                           step--;
                         });
                       },
-                      fontSize: 15,
+                      fontSize: 14,
                       text: "INDIETRO",
                       backgroundColor: Theme.of(context).colorScheme.onSurface,
                       height: 40,
@@ -641,7 +680,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                           });
                         }
                       },
-                      fontSize: 15,
+                      fontSize: 14,
                       text: "CONTINUA",
                       backgroundColor: Theme.of(context).colorScheme.onSurface,
                       height: 40,
@@ -733,7 +772,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                           step--;
                         });
                       },
-                      fontSize: 15,
+                      fontSize: 14,
                       text: "INDIETRO",
                       backgroundColor: Theme.of(context).colorScheme.onSurface,
                       height: 40,
@@ -749,7 +788,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                           }
                         });
                       },
-                      fontSize: 15,
+                      fontSize: 14,
                       text: "CONTINUA",
                       backgroundColor: Theme.of(context).colorScheme.onSurface,
                       height: 40,
@@ -809,7 +848,11 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                               style: TextStyle(
                                   fontSize: 17, fontWeight: FontWeight.w500)),
                           TextSpan(
-                              text: titleController.text,
+                              text: Provider.of<ThemeManager>(context)
+                                          .isCapsLock ==
+                                      true
+                                  ? titleController.text.toUpperCase()
+                                  : titleController.text,
                               style: const TextStyle(
                                   fontSize: 17, fontWeight: FontWeight.w400)),
                         ])),
@@ -888,7 +931,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                           step--;
                         });
                       },
-                      fontSize: 15,
+                      fontSize: 14,
                       text: "INDIETRO",
                       backgroundColor: Theme.of(context).colorScheme.onSurface,
                       height: 40,
@@ -896,8 +939,9 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                       color: Theme.of(context).colorScheme.secondary,
                     ),
                     MyButton(
-                      onPressed: submit,
-                      fontSize: 15,
+                      onPressed: isLoading == false ? submit : null,
+                      fontSize: 14,
+                      isLoading: isLoading,
                       text: "INVIA",
                       backgroundColor: Theme.of(context).colorScheme.onSurface,
                       height: 40,
@@ -911,64 +955,61 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
           ))
     ];
 
-    return Scaffold(
-        body: CustomScrollView(
-      controller: _scrollController,
-      slivers: [
-        AnimatedTitle(
-            scrollController: _scrollController, text: "Nuova Transazione"),
-        SliverList(
-            delegate: SliverChildListDelegate([
-          Form(
-            child: Stepper(
-              physics: const NeverScrollableScrollPhysics(),
-              stepIconBuilder: (stepIndex, stepState) {
-                switch (stepState) {
-                  case StepState.indexed:
-                    return Text(
-                      "${stepIndex + 1}",
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: stepReached > stepIndex || stepIndex == 0
-                              ? Theme.of(context).colorScheme.secondary
-                              : Theme.of(context).colorScheme.onSurface),
-                    );
-                  case StepState.complete:
-                    return Icon(
-                      Icons.check_rounded,
-                      size: 18,
-                      color: Theme.of(context).colorScheme.secondary,
-                    );
-                  case StepState.editing:
-                    return Icon(
-                      Icons.edit_rounded,
-                      size: 17,
-                      color: Theme.of(context).colorScheme.secondary,
-                    );
-                  default:
-                }
-                return null;
-              },
-              connectorColor: WidgetStatePropertyAll(
-                  Theme.of(context).colorScheme.onSurface),
-              connectorThickness: 2,
-              controlsBuilder: (context, details) {
-                return const SizedBox();
-              },
-              onStepTapped: (value) {
-                if (value <= step) {
-                  setState(() {
-                    step = value;
-                  });
-                }
-              },
-              currentStep: step,
-              steps: steps,
-            ),
-          ),
-        ]))
-      ],
-    ));
+    return Stepper(
+      physics: const ClampingScrollPhysics(),
+      stepIconBuilder: (stepIndex, stepState) {
+        switch (stepState) {
+          case StepState.indexed:
+            return Text(
+              "${stepIndex + 1}",
+              style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: stepReached > stepIndex || stepIndex == 0
+                      ? Theme.of(context).colorScheme.secondary
+                      : Theme.of(context).colorScheme.onSurface),
+            );
+          case StepState.complete:
+            return Icon(
+              Icons.check_rounded,
+              size: 18,
+              color: Theme.of(context).colorScheme.secondary,
+            );
+          case StepState.editing:
+            return Icon(
+              Icons.edit_rounded,
+              size: 17,
+              color: Theme.of(context).colorScheme.secondary,
+            );
+          default:
+        }
+        return null;
+      },
+      connectorColor:
+          WidgetStatePropertyAll(Theme.of(context).colorScheme.onSurface),
+      connectorThickness: 2,
+      controlsBuilder: (context, details) {
+        return const SizedBox();
+      },
+      onStepTapped: (value) {
+        if (value < step) {
+          setState(() {
+            step = value;
+          });
+          switch (value) {
+            case 1:
+              Future.delayed(const Duration(milliseconds: 200), () {
+                focusAmount.requestFocus();
+              });
+            case 2:
+              Future.delayed(const Duration(milliseconds: 200), () {
+                focusTitle.requestFocus();
+              });
+          }
+        }
+      },
+      currentStep: step,
+      steps: steps,
+    );
   }
 }

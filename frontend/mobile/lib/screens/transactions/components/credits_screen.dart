@@ -1,4 +1,4 @@
-import 'dart:developer';
+/* import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
@@ -14,7 +14,8 @@ import 'package:mobile/widgets/date_transaction_widget.dart';
 import 'package:mobile/widgets/transaction_card.dart';
 
 class CreditsScreen extends StatefulWidget {
-  const CreditsScreen({super.key});
+  const CreditsScreen({super.key, required this.querySnapshot});
+  final Map<String, dynamic> querySnapshot;
 
   @override
   State<CreditsScreen> createState() => _CreditsScreenState();
@@ -57,7 +58,11 @@ class _CreditsScreenState extends State<CreditsScreen> {
             .collection("users")
             .doc(userId)
             .collection("transactions")
-            .where("category.name", whereIn: ["CREDITO", "DEBITO"])
+            //CAZZO
+            .where("categoryId", whereIn: [
+              widget.querySnapshot["credit"],
+              widget.querySnapshot["debit"]
+            ])
             .orderBy("date", descending: true)
             .get()
             .then(
@@ -78,7 +83,7 @@ class _CreditsScreenState extends State<CreditsScreen> {
             if (DateUtils.isSameDay(date, prevDate)) {
               //log(" STESSA DATA");
               dailyTransactions.add(element);
-              element["type"] == "USCITE"
+              element["type"] == "USCITA"
                   ? dailyAmount -= element["amount"]
                   : dailyAmount += element["amount"];
 
@@ -102,7 +107,7 @@ class _CreditsScreenState extends State<CreditsScreen> {
             //log("NUOVA DATA");
 
             dailyTransactions.add(element);
-            element["type"] == "USCITE"
+            element["type"] == "USCITA"
                 ? dailyAmount -= element["amount"]
                 : dailyAmount += element["amount"];
             if (index == transactionsDocs.length - 1) {
@@ -116,7 +121,7 @@ class _CreditsScreenState extends State<CreditsScreen> {
           }
           //log("PRIMO ELEMENTO");
           dailyTransactions.add(element);
-          element["type"] == "USCITE"
+          element["type"] == "USCITA"
               ? dailyAmount -= element["amount"]
               : dailyAmount += element["amount"];
           if (index == transactionsDocs.length - 1) {
@@ -312,23 +317,23 @@ class _CreditsScreenState extends State<CreditsScreen> {
                     ),
                     transactionsExist == false
                         ? const Text("Nessuna transazione presente.")
-                        :TransactionsGenerator(
-                      fetchTransactions: fetchTransactions,
-                      setKey: (i) {
-                        if (i == 0) {
-                          GlobalKey key = GlobalKey();
-                          keys.add(key);
-                          return key;
-                        } else if (transactions[i]["groupDate"].month !=
-                            transactions[i - 1]["groupDate"].month) {
-                          GlobalKey key = GlobalKey();
-                          keys.add(key);
-                          return key;
-                        }
-                        return null;
-                      },
-                      transactions: transactions,
-                    ),
+                        : TransactionsGenerator(
+                            fetchTransactions: fetchTransactions,
+                            setKey: (i) {
+                              if (i == 0) {
+                                GlobalKey key = GlobalKey();
+                                keys.add(key);
+                                return key;
+                              } else if (transactions[i]["groupDate"].month !=
+                                  transactions[i - 1]["groupDate"].month) {
+                                GlobalKey key = GlobalKey();
+                                keys.add(key);
+                                return key;
+                              }
+                              return null;
+                            },
+                            transactions: transactions as Map<String, Map<String,dynamic>>,
+                          ),
                   ],
                 ),
               ),
@@ -341,3 +346,4 @@ class _CreditsScreenState extends State<CreditsScreen> {
     );
   }
 }
+ */

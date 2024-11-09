@@ -27,7 +27,12 @@ class _CategoryWidgetState extends State<CategoryWidget> {
     await showDialog(
         context: context,
         builder: (dialogContext) => AlertDialog(
-              title:  Text("Eliminare la categoria ${widget.name}?",style: TextStyle(fontSize: 20,color: Theme.of(context).colorScheme.onSurface),),
+              title: Text(
+                "Eliminare la categoria ${widget.name}?",
+                style: TextStyle(
+                    fontSize: 20,
+                    color: Theme.of(context).colorScheme.onSurface),
+              ),
               //titleTextStyle:  TextStyle(fontSize: 20,color: Theme.of(context).colorScheme.onSurface),
               actions: [
                 TextButton(
@@ -42,10 +47,11 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                 TextButton(
                     onPressed: () async {
                       Navigator.pop(dialogContext);
-                      await Db().deleteCategory(context,
-                          type: widget.type,
-                          categoryId: widget.id,
-                          categoryName: widget.name);
+                      await Db().deleteCategory(
+                        context,
+                        type: widget.type,
+                        categoryId: widget.id,
+                      );
                     },
                     child: Text("Si",
                         style: TextStyle(

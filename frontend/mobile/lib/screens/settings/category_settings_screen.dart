@@ -23,15 +23,16 @@ class CategorySettingsScreen extends StatelessWidget {
                   style: TextStyle(
                       fontFamily: Icons.arrow_back_rounded.fontFamily,
                       fontSize: 30,
-                      fontWeight: FontWeight.w800,color: Theme.of(context).colorScheme.onSurface),
+                      fontWeight: FontWeight.w800,
+                      color: Theme.of(context).colorScheme.onSurface),
                 ))),
         centerTitle: true,
-        title:  Text(
+        title: Text(
           "Categorie",
           textAlign: TextAlign.start,
           style: TextStyle(
             color: Theme.of(context).colorScheme.onSurface,
-            fontSize: 25,
+            fontSize: 20,
             fontWeight: FontWeight.w500,
           ),
         ),
@@ -54,9 +55,11 @@ class CategorySettingsScreen extends StatelessWidget {
                     const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.secondary,
-                  boxShadow:  [
+                  boxShadow: [
                     BoxShadow(
-                        color: Theme.of(context).colorScheme.shadow, blurRadius: 30, spreadRadius: -8),
+                        color: Theme.of(context).colorScheme.shadow,
+                        blurRadius: 30,
+                        spreadRadius: -8),
                   ],
                   borderRadius: BorderRadius.circular(40),
                 ),
@@ -64,31 +67,41 @@ class CategorySettingsScreen extends StatelessWidget {
                   children: [
                     SettingWidget(
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  const IncomeCategoryScreen(),
-                            ));
+                        Future.delayed(
+                          const Duration(milliseconds: 300),
+                          () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const IncomeCategoryScreen(),
+                                ));
+                          },
+                        );
                       },
-                      icon: Icons.trending_up_rounded,
+                      prefixIcon: Icons.trending_up_rounded,
                       title: "Entrate",
                       subTitle: "Gestione categorie entrate",
-                      iconSize: 35,
+                      prefixIconSize: 35,
                     ),
-                     SettingWidget(
+                    SettingWidget(
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  const ExpenseCategoryScreen(),
-                            ));
+                        Future.delayed(
+                          const Duration(milliseconds: 300),
+                          () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const ExpenseCategoryScreen(),
+                                ));
+                          },
+                        );
                       },
-                      icon: Icons.trending_down_rounded,
+                      prefixIcon: Icons.trending_down_rounded,
                       title: "Uscite",
                       subTitle: "Gestione categorie uscite",
-                      iconSize: 35,
+                      prefixIconSize: 35,
                     ),
                   ],
                 ),
