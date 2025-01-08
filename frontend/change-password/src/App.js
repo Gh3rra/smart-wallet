@@ -29,6 +29,8 @@ function App() {
 
     if (tokenHash) {
       getSessionByCode(tokenHash);
+    }else{
+      setIsError(true);
     }
   }, []);
 

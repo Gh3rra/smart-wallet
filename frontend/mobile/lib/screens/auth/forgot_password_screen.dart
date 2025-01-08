@@ -42,9 +42,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           isLoading = false;
           /* password app 
           jvkw ecrt wteu pqlr */
-
         });
-         await Supabase.instance.client.auth.resetPasswordForEmail(_emailController.text,redirectTo: "http://localhost:3000/");
+        await Supabase.instance.client.auth.resetPasswordForEmail(
+            _emailController.text,
+            redirectTo: "https://lighthearted-fairy-53bf17.netlify.app/");
         Navigator.push(
             context,
             MaterialPageRoute(

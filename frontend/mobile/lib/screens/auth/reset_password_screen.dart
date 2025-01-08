@@ -38,7 +38,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         });
       }
     });
-          await Supabase.instance.client.auth.resetPasswordForEmail(widget.email,redirectTo: "http://localhost:3000/");
+          await Supabase.instance.client.auth.resetPasswordForEmail(widget.email,redirectTo: "https://lighthearted-fairy-53bf17.netlify.app/");
 
   }
 
