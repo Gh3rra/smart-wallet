@@ -13,14 +13,13 @@ function App() {
 
   const getSessionByCode = async (tokenHash) => {
     console.log("GET SESSION");
-    const {data,error} = await supabase.auth.verifyOtp({
+    const { error } = await supabase.auth.verifyOtp({
       token_hash: tokenHash,
       type: "recovery",
     });
-    if(error){
+    if (error) {
       setIsError(true);
     }
-    
   };
 
   useEffect(() => {
@@ -72,9 +71,7 @@ function App() {
         <div className="success-container">
           <CiWarning className="error-icon" />
           <h3>Sessione scaduta</h3>
-          <p>
-            Il link è scaduto o è stato già utilizzato.
-          </p>
+          <p>Il link è scaduto o è stato già utilizzato.</p>
         </div>
       </div>
     );
