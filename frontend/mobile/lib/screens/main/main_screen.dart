@@ -19,7 +19,7 @@ class _MainScreenState extends State<MainScreen> {
   int selectedIndex = 0;
   List<Widget> pages = [
     const HomeScreen(),
-     GraphsScreen(),
+    const GraphsScreen(),
     const SettingsScreen()
   ];
 

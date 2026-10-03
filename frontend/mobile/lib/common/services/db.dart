@@ -366,8 +366,11 @@ class Db {
     Color color,
   ) async {
     try {
-      await _supabase.rpc("insert_wallet",
-          params: {"p_name": name, "p_amount": amount, "p_color": color.value});
+      await _supabase.rpc("insert_wallet", params: {
+        "p_name": name,
+        "p_amount": amount,
+        "p_color": color.toARGB32()
+      });
     } catch (e) {
       print(e);
       rethrow;
@@ -445,7 +448,7 @@ class Db {
         "p_id": id,
         "p_name": name,
         "p_amount": amount,
-        "p_color": color.value
+        "p_color": color.toARGB32()
       });
     } catch (e) {
       print(e);

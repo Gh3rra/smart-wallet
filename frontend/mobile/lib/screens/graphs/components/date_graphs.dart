@@ -139,7 +139,7 @@ class _DateGraphsState extends State<DateGraphs> {
           rightTitles:
               const AxisTitles(sideTitles: SideTitles(showTitles: false))));
 
-              LineChartData get incomesData => LineChartData(
+  LineChartData get incomesData => LineChartData(
       minX: 0,
       maxX: 5,
       minY: 0,
@@ -242,7 +242,6 @@ class _DateGraphsState extends State<DateGraphs> {
   void initState() {
     super.initState();
     initData();
-  
   }
 
   initData() {
@@ -254,11 +253,11 @@ class _DateGraphsState extends State<DateGraphs> {
         double amount = 0;
         final date = DateTime(now.year, now.month - index);
         for (var element in widget.transactions) {
-            if (DateUtils.isSameMonth(element.date, date) &&
-                element.type == Type.uscita) {
-              amount += element.amount;
-            }
+          if (DateUtils.isSameMonth(element.date, date) &&
+              element.type == Type.uscita) {
+            amount += element.amount;
           }
+        }
 
         return MonthAmountMondel(
             date: date, amount: amount, name: monthsName[date.month - 1]);

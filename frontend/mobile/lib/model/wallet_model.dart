@@ -50,7 +50,7 @@ class WalletModel {
       'id': id,
       'name': name,
       'amount': amount,
-      'color': color.value,
+      'color': color.toARGB32(),
       'order_index': orderIndex,
       'created_at': createdAt.toIso8601String(),
       'updated_at': updatedAt.toIso8601String(),
@@ -59,7 +59,6 @@ class WalletModel {
   }
 
   factory WalletModel.fromMap(Map<String, dynamic> map) {
-   
     return WalletModel(
       id: map['id'] ?? "",
       name: map['name'] ?? "",

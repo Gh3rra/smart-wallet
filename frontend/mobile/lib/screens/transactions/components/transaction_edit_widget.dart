@@ -310,7 +310,7 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
                             IntrinsicHeight(
                               child: DropdownButtonFormField(
                                 items: categoryList,
-                                value: selectedCategory,
+                                initialValue: selectedCategory,
                                 onChanged: (value) {
                                   selectedCategory = value;
                                 },

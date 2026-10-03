@@ -75,7 +75,7 @@ class _GraphsScreenState extends State<GraphsScreen> {
                             return TransactionModel.fromMap(transaction);
                           },
                         ).toList();
-                        return  DateGraphs(transactions: transactionsList);
+                        return DateGraphs(transactions: transactionsList);
                       }
                       return const SizedBox();
                     });

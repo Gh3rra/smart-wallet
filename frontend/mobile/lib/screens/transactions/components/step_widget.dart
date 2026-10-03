@@ -604,7 +604,7 @@ class _StepWidgetState extends State<StepWidget> {
                         suffixIconConstraints:
                             const BoxConstraints(minHeight: 0, minWidth: 0)),
                     icon: const SizedBox(),
-                    value: category,
+                    initialValue: category,
                     items: categoryList,
                     onChanged: (value) {
                       category = value;
@@ -725,7 +725,7 @@ class _StepWidgetState extends State<StepWidget> {
                         suffixIconConstraints:
                             const BoxConstraints(minHeight: 0, minWidth: 0)),
                     icon: const SizedBox(),
-                    value: wallet,
+                    initialValue: wallet,
                     items: walletList,
                     onChanged: (value) {
                       wallet = value;
@@ -820,11 +820,11 @@ class _StepWidgetState extends State<StepWidget> {
                               style: TextStyle(
                                   fontSize: 17, fontWeight: FontWeight.w500)),
                           TextSpan(
-                              text: Provider.of<ThemeManager>(context)
-                                          .capsLock ==
-                                      true
-                                  ? titleController.text.toUpperCase()
-                                  : titleController.text,
+                              text:
+                                  Provider.of<ThemeManager>(context).capsLock ==
+                                          true
+                                      ? titleController.text.toUpperCase()
+                                      : titleController.text,
                               style: const TextStyle(
                                   fontSize: 17, fontWeight: FontWeight.w400)),
                         ])),

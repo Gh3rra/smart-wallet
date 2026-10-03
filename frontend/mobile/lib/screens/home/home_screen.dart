@@ -51,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
  */
   @override
   Widget build(BuildContext context) {
-    print(Theme.of(context).colorScheme.onPrimary.value);
+    print(Theme.of(context).colorScheme.onPrimary.toARGB32());
     return StreamBuilder(
         stream: Db().getUserStream(),
         builder: (context, snapshot) {

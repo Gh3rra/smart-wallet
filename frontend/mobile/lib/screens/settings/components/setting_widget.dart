@@ -76,7 +76,7 @@ class _SettingWidgetState extends State<SettingWidget> {
                                                     .colorScheme
                                                     .onSurface)),
                                         Text(widget.subTitle!,
-                                            style:  TextStyle(
+                                            style: TextStyle(
                                                 fontWeight: FontWeight.w400,
                                                 fontSize: 13,
                                                 color: Theme.of(context)
@@ -102,7 +102,8 @@ class _SettingWidgetState extends State<SettingWidget> {
                             const WidgetStatePropertyAll(Colors.transparent),
                         value: widget.value!,
                         onChanged: widget.onChanged,
-                        activeColor: Theme.of(context).colorScheme.onPrimary,
+                        activeThumbColor:
+                            Theme.of(context).colorScheme.onPrimary,
                         inactiveTrackColor: const Color(0xff909092),
                         inactiveThumbColor: const Color(0xffD9D9D9),
                       )
@@ -130,7 +131,7 @@ class _SettingWidgetState extends State<SettingWidget> {
                                           .colorScheme
                                           .onSurface)),
                               Text(widget.subTitle!,
-                                  style:  TextStyle(
+                                  style: TextStyle(
                                       fontWeight: FontWeight.w400,
                                       fontSize: 13,
                                       color: Theme.of(context)
